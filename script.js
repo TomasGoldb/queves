@@ -4,27 +4,51 @@ const palabras = ["soledad", "trabajo", "paises bajos", "van en caravana", "cont
     "mediocre", "fogata", "empatar", "deporte", "pienso, luego existo", "gente", "desespera", "máscara", "tirana", "casados", 
     "agrandada", "resorte", "imparable", "tercera caída", "heredado", "sordo", "aguardiente", "manómetro"];
 
+let acertados = [];
+
+function mostrarMensaje(mensaje, esError = false) {
+    const resultado = document.getElementById('resultado');
+    resultado.innerHTML = `<span>${mensaje}</span> <button onclick="cerrarMensaje()">X</button>`;
+    resultado.className = esError ? 'incorrecto' : 'correcto';
+}
+
+function cerrarMensaje() {
+    const resultado = document.getElementById('resultado');
+    resultado.innerHTML = '';
+    resultado.className = '';
+}
+
 document.getElementById('validarNumero').addEventListener('click', function() {
     const numTarjeta = parseInt(document.getElementById('numTarjeta').value);
+    cerrarMensaje(); // Cierra cualquier mensaje previo
+
     if (numTarjeta >= 1 && numTarjeta <= 64) {
-        document.getElementById('palabraSeccion').classList.remove('hidden');
-        document.getElementById('resultado').innerHTML = ''; // Limpia el resultado anterior
+        if (acertados.includes(numTarjeta)) {
+            mostrarMensaje('Este número de tarjeta ya fue acertado.', true);
+        } else {
+            document.getElementById('palabraSeccion').classList.remove('hidden');
+            document.getElementById('resultado').innerHTML = ''; // Limpia el resultado anterior
+            document.getElementById('intento').focus(); // Foco en el input de la palabra
+        }
     } else {
-        document.getElementById('resultado').innerHTML = 'Número inválido. Intenta de nuevo.';
-        document.getElementById('resultado').className = 'incorrecto';
+        mostrarMensaje('Número inválido. Intenta de nuevo.', true);
     }
 });
 
 document.getElementById('validarPalabra').addEventListener('click', function() {
     const numTarjeta = parseInt(document.getElementById('numTarjeta').value);
     const intento = document.getElementById('intento').value.toLowerCase();
-    const resultado = document.getElementById('resultado');
 
     if (intento === palabras[numTarjeta - 1]) {
-        resultado.innerHTML = '¡CORRECTO!';
-        resultado.className = 'correcto';
+        mostrarMensaje('¡CORRECTO!');
+        acertados.push(numTarjeta);
+
+        // Limpiar todos los inputs
+        document.getElementById('numTarjeta').value = '';
+        document.getElementById('intento').value = '';
+        document.getElementById('palabraSeccion').classList.add('hidden');
     } else {
-        resultado.innerHTML = 'INCORRECTO, VUELVE A INTENTAR';
-        resultado.className = 'incorrecto';
+        mostrarMensaje('INCORRECTO, VUELVE A INTENTAR', true);
+        document.getElementById('intento').focus(); // Mantiene el foco en el input
     }
 });
