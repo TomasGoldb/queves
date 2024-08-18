@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué ves?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>¿Qué ves?</h1>
+        <form id="gameForm">
+            <label for="numTarjeta">Ingresa el número de tarjeta (1-64):</label>
+            <input type="number" id="numTarjeta" min="1" max="64" required>
+            <button type="button" id="validarNumero">Validar Número</button>
+            
+            <div id="palabraSeccion" class="hidden">
+                <label for="intento">Ingresa la palabra o frase que crees correcta:</label>
+                <input type="text" id="intento" required>
+                <button type="button" id="validarPalabra">Validar Palabra</button>
+            </div>
+        </form>
+        <div id="resultado"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
